@@ -1,0 +1,2 @@
+Account Name,Row,Bank Country,Error Source,Error Message,Params
+CLAUDIA ALEJANDRA ORTIZ MORALES,2,CA,beneficiary.bank_details.account_routing_value1,map[code:FAILED_VALIDATION_FUNCTIONS description:The value provided for this field has failed 1 validation rule(s) validation_functions:[map[description:Should be valid and supported name:AccountRoutingValue1IsReal parameters:map[] server_side_only:true]] value:425610040],

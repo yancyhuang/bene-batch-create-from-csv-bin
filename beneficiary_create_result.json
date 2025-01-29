@@ -1,0 +1,21 @@
+{
+  "successful": {
+    "count": 2,
+    "results": [
+      {
+        "name": "Triple 8 Hair Salon o/b Wider Strong Limited ",
+        "row": 1,
+        "id": "acb9c381-5dd5-463e-b645-6b8e17d3039d"
+      },
+      {
+        "name": "Fisher, Ziemann and Stoltenberg",
+        "row": 2,
+        "id": "b9ce0d5c-93fa-4d18-be91-3034f8a5e8ea"
+      }
+    ]
+  },
+  "errors": {
+    "count": 0,
+    "results": null
+  }
+}

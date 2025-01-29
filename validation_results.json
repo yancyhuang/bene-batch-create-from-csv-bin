@@ -1,0 +1,61 @@
+{
+  "successful": {
+    "count": 2,
+    "results": [
+      {
+        "beneficiary": {
+          "additionalInfo": {},
+          "address": {
+            "city": "Hongkong",
+            "country_code": "HK",
+            "state": "HK",
+            "street_address": "4895 Av.Hotel de Ville apt.37"
+          },
+          "bankDetails": {},
+          "bank_details": {
+            "account_currency": "HKD",
+            "account_name": "Triple 8 Hair Salon o/b Wider Strong Limited",
+            "account_number": "239771777883",
+            "account_routing_type1": "bank_code",
+            "account_routing_value1": "024",
+            "bank_country_code": "HK",
+            "bank_name": "HSBC"
+          },
+          "entity_type": "COMPANY"
+        },
+        "payment_methods": [
+          "LOCAL"
+        ]
+      },
+      {
+        "beneficiary": {
+          "additionalInfo": {},
+          "address": {
+            "city": "East Diamond",
+            "country_code": "US",
+            "postcode": "138",
+            "state": "DeKalb",
+            "street_address": "931 Mohr Course"
+          },
+          "bankDetails": {},
+          "bank_details": {
+            "account_currency": "USD",
+            "account_name": "Fisher, Ziemann and Stoltenberg",
+            "account_number": "73522048",
+            "bank_country_code": "US",
+            "bank_name": "Bauch - Kertzmann",
+            "swift_code": "CHASUS33"
+          },
+          "entity_type": "COMPANY"
+        },
+        "payment_methods": [
+          "SWIFT"
+        ]
+      }
+    ]
+  },
+  "errors": {
+    "count": 1,
+    "results": null
+  }
+}
