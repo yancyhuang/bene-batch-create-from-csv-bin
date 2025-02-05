@@ -259,6 +259,7 @@ func validateBeneficiaries(csvPath string, bearerToken string, isProd bool) {
 		// 设置请求头
 		req.Header.Set("Content-Type", "application/json")
 		req.Header.Set("Authorization", "Bearer "+bearerToken)
+		req.Header.Set("User-Agnet", "awx-support-bene-upload/1.0")
 
 		// 发送请求
 		client := &http.Client{}
