@@ -315,15 +315,25 @@ func validateBeneficiaries(csvPath string, bearerToken string, isProd bool) {
 
 	if len(validationErrors) > 0 {
 		fmt.Printf("\n=== Detailed Error Information ===\n")
-		for i, err := range validationErrors {
-			fmt.Printf("\nError #%d:\n", i+1)
-			fmt.Printf("Account Name: %s\n", err.AccountName)
-			fmt.Printf("Row: %d\n", err.Row)
-			fmt.Printf("Bank Country: %s\n", err.BankCountry)
-			fmt.Printf("Error Source: %s\n", err.ErrorSource)
-			fmt.Printf("Error Message: %s\n", err.ErrorMessage)
-			fmt.Printf("Parameters: %s\n", err.Params)
-			fmt.Println("-------------------")
+		var printingRowNumber int
+		for _, err := range validationErrors {
+			if err.Row != printingRowNumber {
+				printingRowNumber = err.Row
+				fmt.Printf(
+					"---------%s: %d, Account Name: %s, Bank Country: %s----------\n",
+					"Row",
+					err.Row,
+					err.AccountName,
+					err.BankCountry)
+			}
+			// fmt.Printf("\nError #%d:\n", i+1)
+			if err.ErrorSource == "message" || err.ErrorSource == "details" || err.ErrorSource == "code" {
+				fmt.Printf("* Error Source: %s\n", err.ErrorSource)
+				fmt.Printf("  Error Message: %s\n", err.ErrorMessage)
+				if err.Params != "" {
+					fmt.Printf("Parameters: %s\n", err.Params)
+				}
+			}
 		}
 	}
 
@@ -431,7 +441,7 @@ func buildNestedDict(dict map[string]interface{}, path string, value string) {
 	parts := strings.Split(path, ".")
 	current := dict
 
-	if path == "payment_methods" {
+	if path == "payment_methods" || path == "transfer_methods" {
 		current[path] = strings.Split(value, ",")
 		return
 	}
