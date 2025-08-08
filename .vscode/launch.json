@@ -10,7 +10,7 @@
             "request": "launch",
             "mode": "debug",
             "program": "server.go",
-            "args": ["validate", "-i", "create_payment1.csv"]
+            "args": ["validate", "-i", "test-template.csv"]
         },
         {
             "name": "Go Create Beneficiaries",
@@ -20,21 +20,5 @@
             "program": "server.go",
             "args": ["create"]
         },
-        {
-            "name": "validate beneficiary",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "deepseek_server.py",
-            "console": "integratedTerminal",
-            "args": ["validate", "-i", "create_payment1.csv"]
-        },
-        {
-            "name": "create beneficiary",
-            "type": "debugpy",
-            "request": "launch",
-            "program": "deepseek_server.py",
-            "console": "integratedTerminal",
-            "args": ["create"]
-        }
     ]
 }

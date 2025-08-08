@@ -7,6 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -269,11 +270,30 @@ func validateBeneficiaries(csvPath string, bearerToken string, isProd bool) {
 		}
 		defer resp.Body.Close()
 
-		var result map[string]interface{}
-		json.NewDecoder(resp.Body).Decode(&result)
+		// var result map[string]interface{}
+		var result struct {
+			Code    string `json:"code"`
+			Details struct {
+				Errors []struct {
+					Code   string                 `json:"code"`
+					Params map[string]interface{} `json:"params"`
+					Source string                 `json:"source"`
+				} `json:"errors"`
+			} `json:"details"`
+			Message string `json:"message"`
+		}
 
 		// 检查响应
-		if resp.StatusCode == 401 {
+		bodyBytes, _ := ioutil.ReadAll(resp.Body)
+		// fmt.Print(string(bodyBytes))
+		if resp.StatusCode == 200 {
+			continue
+			// bodyBytes, _ := ioutil.ReadAll(resp.Body)
+			// fmt.Print(string(bodyBytes))
+		} else if resp.StatusCode == 400 {
+			json.Unmarshal(bodyBytes, &result)
+			// json.NewDecoder(resp.Body).Decode(&result)
+		} else if resp.StatusCode == 401 {
 			validationErrors = append(validationErrors, ValidationError{
 				AccountName:  getAccountName(payload),
 				Row:          rowNum,
@@ -284,19 +304,19 @@ func validateBeneficiaries(csvPath string, bearerToken string, isProd bool) {
 			})
 			continue
 		}
-		if len(result) == 0 {
+		if len(result.Details.Errors) == 0 {
 			// 成功的情况
 			successfulResults = append(successfulResults, payload)
 		} else {
 			// 处理错误
-			for field, errMsg := range result {
+			for _, value := range result.Details.Errors {
 				validationErrors = append(validationErrors, ValidationError{
 					AccountName:  getAccountName(payload),
 					Row:          rowNum,
 					BankCountry:  getBankCountry(payload),
-					ErrorSource:  field,
-					ErrorMessage: fmt.Sprintf("%v", errMsg),
-					Params:       "",
+					ErrorSource:  value.Source,
+					ErrorMessage: fmt.Sprintf("%v", value.Code),
+					Params:       fmt.Sprintf("%v", value.Params),
 				})
 			}
 		}
@@ -326,14 +346,19 @@ func validateBeneficiaries(csvPath string, bearerToken string, isProd bool) {
 					err.AccountName,
 					err.BankCountry)
 			}
-			// fmt.Printf("\nError #%d:\n", i+1)
-			if err.ErrorSource == "message" || err.ErrorSource == "details" || err.ErrorSource == "code" {
-				fmt.Printf("* Error Source: %s\n", err.ErrorSource)
-				fmt.Printf("  Error Message: %s\n", err.ErrorMessage)
-				if err.Params != "" {
-					fmt.Printf("Parameters: %s\n", err.Params)
-				}
+			fmt.Printf("* Error Source: %s\n", err.ErrorSource)
+			fmt.Printf("  Error Message: %s\n", err.ErrorMessage)
+			if err.Params != "" {
+				fmt.Printf("Parameters: %s\n", err.Params)
 			}
+			// fmt.Printf("\nError #%d:\n", i+1)
+			// if err.ErrorSource == "message" || err.ErrorSource == "details" || err.ErrorSource == "code" {
+			// 	fmt.Printf("* Error Source: %s\n", err.ErrorSource)
+			// 	fmt.Printf("  Error Message: %s\n", err.ErrorMessage)
+			// 	if err.Params != "" {
+			// 		fmt.Printf("Parameters: %s\n", err.Params)
+			// 	}
+			// }
 		}
 	}
 
