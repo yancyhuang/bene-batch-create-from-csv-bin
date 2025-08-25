@@ -287,7 +287,7 @@ func validateBeneficiaries(csvPath string, bearerToken string, isProd bool) {
 		bodyBytes, _ := ioutil.ReadAll(resp.Body)
 		// fmt.Print(string(bodyBytes))
 		if resp.StatusCode == 200 {
-			continue
+
 			// bodyBytes, _ := ioutil.ReadAll(resp.Body)
 			// fmt.Print(string(bodyBytes))
 		} else if resp.StatusCode == 400 {
@@ -440,7 +440,7 @@ func createBeneficiaries(bearerToken string, isProd bool) {
 			}{
 				Name: getAccountName(result.(map[string]interface{})),
 				Row:  i + 1,
-				ID:   createResp["beneficiary_id"].(string),
+				ID:   createResp["id"].(string),
 			})
 			fmt.Printf("Successfully created - %s\n", getAccountName(result.(map[string]interface{})))
 		} else {
